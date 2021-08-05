@@ -5,9 +5,18 @@ import { Header, Nav, Main, Footer } from "./components";
 import * as state from "/store";
 
 import axios from "axios";
-// import "./env";
 import Navigo from "navigo";
 import { capitalize } from "lodash";
+import "./env";
+
+axios
+  .get(`https://api.github.com/users/${process.env.GITHUB_USERNAME}/repos`, {
+    headers: {
+      Authorization: `token ${process.env.GITHUB_TOKEN}`
+    }
+  })
+  .then(response => console.log(response.data));
+
 
 const router = new Navigo(window.location.origin);
 
@@ -29,6 +38,25 @@ function render(st) {
 
 render(state.Home);
 
+router.hooks({
+  before: (done, params) => {
+    const page =
+      params && params.hasOwnProperty("page")
+        ? capitalize(params.page) // /? is a different if-else statement
+        : "Home";
+
+    if (page === "Blog") {
+      state.Blog.posts = [];
+      axios.get("https://jsonplaceholder.typicode.com/posts").then(response => {
+        response.data.forEach(post => {
+          state.Blog.posts.push(post);
+          done();
+        });
+      });
+    }
+  }
+});
+
 axios
   .get("https://jsonplaceholder.typicode.com/posts")
   // handle the response from the API
@@ -39,6 +67,22 @@ axios
       state.Blog.posts.push(post);
     });
   });
+
+axios
+  .get(
+    `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.WEATHER_API_KEY}&q=st.%20louis`
+  )
+  .then(response => {
+    state.Home.weather = {};
+    // console.log(response, state.Home.weather);
+    state.Home.weather.city = response.data.name;
+    state.Home.weather.temp = response.data.main.temp;
+    state.Home.weather.feelsLike = response.data.main.feels_like;
+    state.Home.weather.humidity = response.data.main.humidity;
+    state.Home.weather.description = response.data.weather[0]["description"];
+    done();
+  })
+  .catch(err => console.log(err));
 
 // add menu toggle to bars icon in nav bar
 document.querySelector(".fa-bars").addEventListener("click", () => {
@@ -110,4 +154,36 @@ const dogPictures = [
 //     console.log("Name: ", el.name);
 //     console.log("Value: ", el.value);
 //   });
+// });
+
+// router.hooks({
+//   before: (done, params) => {
+//     const page = params && params.hasOwnProperty("page") ? capitalize(params.page) : "Home";
+
+//     if (page === "Blog") {
+//       state.Blog.posts = [];
+//       axios.get("https://jsonplaceholder.typicode.com/posts").then(response => {
+//         response.data.forEach(post => {
+//           state.Blog.posts.push(post);
+//           done();
+//         });
+//       });
+//     }
+
+//     if (page === "Home") {
+//       axios
+//         .get(
+//           `https://api.openweathermap.org/data/2.5/weather?appid=fbb30b5d6cf8e164ed522e5082b49064&q=st.%20louis`
+//         )
+//         .then(response => {
+//           state.Home.weather = {};
+//           state.Home.weather.city = response.data.name;
+//           state.Home.weather.temp = response.data.main.temp;
+//           state.Home.weather.feelsLike = response.data.main.feels_like;
+//           state.Home.weather.description = response.data.weather[0].main;
+//           done();
+//         })
+//         .catch(err => console.log(err));
+//     }
+//   }
 // });
