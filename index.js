@@ -3,6 +3,9 @@
 // import { Header, Nav, Main, Footer } from "./components";
 import { Header, Nav, Main, Footer } from "./components";
 import * as state from "/store";
+
+import axios from "axios";
+// import "./env";
 import Navigo from "navigo";
 import { capitalize } from "lodash";
 
@@ -25,6 +28,17 @@ function render(st) {
 }
 
 render(state.Home);
+
+axios
+  .get("https://jsonplaceholder.typicode.com/posts")
+  // handle the response from the API
+  .then(response => {
+    // for each post in the response Array,
+    response.data.forEach(post => {
+      // add it to state.Blog.posts
+      state.Blog.posts.push(post);
+    });
+  });
 
 // add menu toggle to bars icon in nav bar
 document.querySelector(".fa-bars").addEventListener("click", () => {
