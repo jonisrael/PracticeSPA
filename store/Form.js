@@ -1,4 +1,4 @@
 export default {
-  header: "Form Page",
+  header: "Add A Photo",
   view: "Form"
 };

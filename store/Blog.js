@@ -1,5 +1,5 @@
 export default {
-  header: "My blog",
+  header: "My Blog",
   view: "Blog",
   posts: []
 };
