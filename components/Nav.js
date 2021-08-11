@@ -5,8 +5,8 @@ export default links => html`
     <i class="fas fa-bars"></i>
     <ul class="hidden--mobile nav-links">
       ${links.map(
-        link =>
-          `<li><a href="/${link.title}" title="${link.title}" data-navigo>${link.text}</a></li>`
+        el =>
+          `<li><a href="/${el.title}" title="${el.title}" data-navigo>${el.text}</a></li>`
       )}
     </ul>
   </nav>
