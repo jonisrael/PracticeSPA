@@ -75,4 +75,4 @@ app.route("/greetings/:name").get((request, response) => {
 
 // Executing the Express (This must be last)
 const port = process.env.PORT || 4040;
-app.listen(4040, () => console.log(`Listening on port ${port}`));
+app.listen(port, () => console.log(`Listening on port ${port}`));
