@@ -83,7 +83,6 @@ function addEventListeners(st) {
         sauce: inputList.sauce.value,
         toppings: toppings
       };
-
       axios
         .post(`${process.env.API}/pizzas`, requestData) // process.env.API accesses API
         .then(response => {
@@ -96,18 +95,6 @@ function addEventListeners(st) {
     });
   }
 }
-
-// get data from an API endpoint
-// axios
-//   .get("https://jsonplaceholder.typicode.com/posts")
-//   // handle the response from the API
-//   .then((response) => {
-//     // for each post in the response Array,
-//     response.data.forEach((post) => {
-//       // add it to state.Blog.posts
-//       state.Blog.posts.push(post);
-//     });
-//   });
 
 router.hooks({
   before: (done, params) => {

@@ -14,7 +14,7 @@ router.post("/pizzas", (request, response) => {
 // Get all pizza records
 router.get("/pizzas", (request, response) => {
   pizza.model.find({}, (error, data) => {
-    if (error) return res.sendStatus(500).json(error);
+    if (error) return response.sendStatus(500).json(error);
     return response.json(data);
   });
 });
